@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Stand-in for BluePearlCLI used by the tests. It only mimics the bits the server relies on."""
+import json, os, re, sys
+from pathlib import Path
+
+args = sys.argv[1:]
+def opt(name):
+    return args[args.index(name) + 1] if name in args else None
+
+if "-shortversion" in args:
+    print("2026.4-fake"); sys.exit(0)
+if "-help" in args:
+    print(f"Help for {opt('-help')}: Case expression size does not match case item size."); sys.exit(0)
+
+out = Path(opt("-output") or "bluepearl.results"); out.mkdir(parents=True, exist_ok=True)
+log = Path(opt("-logfile") or out / "bluepearl.log")
+tcl = "\n".join(Path(args[i + 1]).read_text() for i, a in enumerate(args) if a == "-tcl")
+hdl = [a for a in args if a.endswith((".v", ".sv", ".vhd"))]
+typed = re.findall(r"BPS::add_input_files -language \S+ \{([^}]*)\}", tcl)
+src = hdl[0] if hdl else (typed[0] if typed else "rtl/top.v")
+if os.environ.get("FAKE_BP_CRASH"):
+    print("ERROR: Unable to check out license"); sys.exit(2)
+
+msgs = [("W", "BPS-0027", src, 70, "Case expression size (8 bits) does not match case item expression size (7 bits)"),
+        ("E", "BPS-0100", src, 12, "Signal 'foo' is undriven"),
+        ("I", "BPS-0396", src, 3, "Module 'top' loaded")]
+if os.environ.get("FAKE_BP_FIXED"):
+    msgs = msgs[:1] + msgs[2:]  # the "fixed" design has no error
+
+log.write_text("Blue Pearl fake log\n" + "".join(f"{s}-{i}: {f}({l}): {t}\n" for s, i, f, l, t in msgs))
+if "-write_sarif" in args:
+    lv = {"E": "error", "W": "warning", "I": "note"}
+    sarif = {"version": "2.1.0", "runs": [{"tool": {"driver": {"name": "Blue Pearl"}}, "results": [
+        {"ruleId": i, "level": lv[s], "message": {"text": t},
+         "locations": [{"physicalLocation": {"artifactLocation": {"uri": f}, "region": {"startLine": l}},
+                        "logicalLocations": [{"name": "top", "kind": "module"}]}]} for s, i, f, l, t in msgs]}]}
+    log.with_suffix(".sarif").write_text(json.dumps(sarif))
+for ph in re.findall(r"BPS::run (\w+)", tcl):
+    print(f"BPMCP-PHASE: {ph}")
+print(f"BPMCP-OUTPUTDIR: {out}")
+m = re.search(r"-reportcsv \{([^}]*)\}", tcl)
+if m:
+    Path(m.group(1)).write_text("Severity,Message ID,File,Line,Module,Message\n" +
+        "".join(f'{s},{i},{f},{l},top,"{t}"\n' for s, i, f, l, t in msgs))
+sys.exit(0)

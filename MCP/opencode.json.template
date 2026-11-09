@@ -1,0 +1,36 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/<model-id>",
+  "provider": {
+    "ollama": {
+      "name": "Ollama",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": { "baseURL": "http://<ollama-host>:11434/v1", "apiKey": "ollama" },
+      "models": {
+        "<model-id>": { "name": "<display name>", "contextLength": 65536, "maxTokens": 8192 }
+      }
+    }
+  },
+  "mcp": {
+    "bluepearl": {
+      "type": "local",
+      "command": ["/path/to/venv/bin/bluepearl-mcp"],
+      "enabled": true,
+      "environment": {
+        "BLUEPEARL_HOME": "/path/to/BluePearl/install",
+        "BLUEPEARL_ALLOWED_ROOTS": "/path/to/designs:/path/to/more/designs",
+        "BLUEPEARL_RUNS_DIR": "/local/disk/path/bluepearl_runs",
+        "LM_LICENSE_FILE": "<port>@<license-server>",
+        "BLUEPEARL_WRITER_MODEL": "<writer-model-id>",
+        "BLUEPEARL_WRITER_URL": "http://<ollama-host>:11434",
+        "BLUEPEARL_WRITER_SKILL_DIR": "/path/to/skills"
+      }
+    }
+  },
+  "agent": {
+    "bluepearl-check": {
+      "description": "Checks RTL with Blue Pearl Analyze and fixes what it reports.",
+      "prompt": "You check and fix RTL using the bluepearl tools. For a module given as text, call bluepearl_lint_code with the module name as top. For a project, call bluepearl_run with its .f file or setup Tcl, then read errors before warnings with bluepearl_get_messages. Before fixing a message, look at the code with bluepearl_get_source and, if the message is unclear, at bluepearl_help for its message id. After each fix, check again; for projects, use bluepearl_compare_runs to confirm what was fixed and that nothing new was introduced. Stop after 4 fix rounds and report what remains."
+    }
+  }
+}

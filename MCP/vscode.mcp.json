@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "bluepearl": {
+      "type": "stdio",
+      "command": "/path/to/venv/bin/bluepearl-mcp",
+      "env": {
+        "BLUEPEARL_HOME": "/path/to/BluePearl/install",
+        "BLUEPEARL_ALLOWED_ROOTS": "${workspaceFolder}",
+        "BLUEPEARL_RUNS_DIR": "${workspaceFolder}/.bluepearl_runs",
+        "BLUEPEARL_WRITER_MODEL": "<writer-model-id>",
+        "BLUEPEARL_WRITER_URL": "http://<ollama-host>:11434",
+        "BLUEPEARL_WRITER_SKILL_DIR": "/path/to/skills"
+      }
+    }
+  }
+}
