@@ -2,7 +2,7 @@
   "servers": {
     "bluepearl": {
       "type": "stdio",
-      "command": "/path/to/venv/bin/bluepearl-mcp",
+      "command": "/path/to/venv/bin/bluepearlcli-mcp",
       "env": {
         "BLUEPEARL_HOME": "/path/to/BluePearl/install",
         "BLUEPEARL_ALLOWED_ROOTS": "${workspaceFolder}",

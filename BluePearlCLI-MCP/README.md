@@ -1,4 +1,4 @@
-# bluepearl-mcp
+# bluepearlcli-mcp
 
 An MCP server that lets an AI model run **Blue Pearl Analyze** (`BluePearlCLI`), read the resulting
 lint/CDC messages, look at the HDL around each one, ask Blue Pearl for its own explanation of a
@@ -71,7 +71,7 @@ Claude Desktop / any MCP client (`claude_desktop_config.json`):
 {
   "mcpServers": {
     "bluepearl": {
-      "command": "bluepearl-mcp",
+      "command": "bluepearlcli-mcp",
       "env": {
         "BLUEPEARL_HOME": "/opt/BluePearl/2026.4",
         "BLUEPEARL_ALLOWED_ROOTS": "/home/me/projects",
@@ -83,7 +83,7 @@ Claude Desktop / any MCP client (`claude_desktop_config.json`):
 }
 ```
 
-Claude Code: `claude mcp add bluepearl -e BLUEPEARL_HOME=/opt/BluePearl/2026.4 -- bluepearl-mcp`
+Claude Code: `claude mcp add bluepearl -e BLUEPEARL_HOME=/opt/BluePearl/2026.4 -- bluepearlcli-mcp`
 
 Works with MCP Python SDK 1.x (`FastMCP`) and 2.x (`MCPServer`).
 

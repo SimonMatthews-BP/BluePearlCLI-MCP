@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from bluepearl_mcp.parsers import filter_messages, parse_csv, parse_log_lines, parse_sarif, summarize
+from bluepearlcli_mcp.parsers import filter_messages, parse_csv, parse_log_lines, parse_sarif, summarize
 
 
 def test_log_line_from_user_guide():

@@ -14,8 +14,8 @@ def server(tmp_path, monkeypatch):
     monkeypatch.setenv("BLUEPEARL_CLI", str(FAKE))
     monkeypatch.setenv("BLUEPEARL_RUNS_DIR", str(tmp_path / "runs"))
     monkeypatch.setenv("BLUEPEARL_ALLOWED_ROOTS", os.pathsep.join([str(HERE / "fixtures"), str(tmp_path)]))
-    sys.modules.pop("bluepearl_mcp.server", None)
-    import bluepearl_mcp.server as s
+    sys.modules.pop("bluepearlcli_mcp.server", None)
+    import bluepearlcli_mcp.server as s
     return s
 
 
@@ -99,7 +99,7 @@ def test_error_reason_reaches_client(tmp_path):
                BLUEPEARL_ALLOWED_ROOTS=str(HERE / "fixtures"), PYTHONPATH=str(HERE.parent / "src"))
 
     async def go():
-        params = StdioServerParameters(command=sys.executable, args=["-m", "bluepearl_mcp.server"], env=env)
+        params = StdioServerParameters(command=sys.executable, args=["-m", "bluepearlcli_mcp.server"], env=env)
         async with stdio_client(params) as (r, w):
             async with ClientSession(r, w) as s:
                 await s.initialize()

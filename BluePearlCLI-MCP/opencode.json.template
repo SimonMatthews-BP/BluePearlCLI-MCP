@@ -14,7 +14,7 @@
   "mcp": {
     "bluepearl": {
       "type": "local",
-      "command": ["/path/to/venv/bin/bluepearl-mcp"],
+      "command": ["/path/to/venv/bin/bluepearlcli-mcp"],
       "enabled": true,
       "environment": {
         "BLUEPEARL_HOME": "/path/to/BluePearl/install",

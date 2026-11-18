@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import pytest
 
-from bluepearl_mcp.writer import _fence, normalise
+from bluepearlcli_mcp.writer import _fence, normalise
 
 
 def test_normalise_matches_bps_write_policy():
@@ -54,8 +54,8 @@ def test_writer_tools(tmp_path, monkeypatch, fake_ollama):
     monkeypatch.setenv("BLUEPEARL_WRITER_MODEL", "bluepearl-rtl-quantized:latest")
     monkeypatch.setenv("BLUEPEARL_WRITER_URL", url)
     monkeypatch.setenv("BLUEPEARL_WRITER_SKILL_DIR", str(tmp_path / "skills"))
-    sys.modules.pop("bluepearl_mcp.server", None)
-    import bluepearl_mcp.server as s
+    sys.modules.pop("bluepearlcli_mcp.server", None)
+    import bluepearlcli_mcp.server as s
 
     code = asyncio.run(s.bluepearl_write_module("4-bit counter", name="counter", ports="input clk"))
     assert code == "module counter; endmodule\n"
@@ -76,6 +76,6 @@ def test_writer_tools(tmp_path, monkeypatch, fake_ollama):
 def test_writer_tools_absent_without_model(tmp_path, monkeypatch):
     monkeypatch.delenv("BLUEPEARL_WRITER_MODEL", raising=False)
     monkeypatch.setenv("BLUEPEARL_RUNS_DIR", str(tmp_path / "runs"))
-    sys.modules.pop("bluepearl_mcp.server", None)
-    import bluepearl_mcp.server as s
+    sys.modules.pop("bluepearlcli_mcp.server", None)
+    import bluepearlcli_mcp.server as s
     assert not hasattr(s, "bluepearl_write_module")
