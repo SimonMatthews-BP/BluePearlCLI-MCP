@@ -85,6 +85,8 @@ Claude Desktop / any MCP client (`claude_desktop_config.json`):
 
 Claude Code: `claude mcp add bluepearl -e BLUEPEARL_HOME=/opt/BluePearl/2026.4 -- bluepearlcli-mcp`
 
+OpenCode: see [OPENCODE.md](OPENCODE.md) for a step-by-step guide.
+
 Works with MCP Python SDK 1.x (`FastMCP`) and 2.x (`MCPServer`).
 
 ## Using a GUI project
